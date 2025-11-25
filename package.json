@@ -1,0 +1,13 @@
+{
+  "name": "meufin",
+  "version": "1.0.0",
+  "description": "Controle financeiro pessoal - PWA offline-first",
+  "private": true,
+  "scripts": {
+    "dev": "npx serve . -p 5500",
+    "start": "npx serve . -p 5500"
+  },
+  "keywords": ["finance", "pwa", "offline"],
+  "author": "Carlos Piquet",
+  "license": "MIT"
+}
