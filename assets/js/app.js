@@ -422,10 +422,10 @@ function fillConfigPage() {
     const emailSection = document.getElementById("emailjs-section");
     const adminLinkSection = document.getElementById("admin-link-section");
     if (emailSection) {
-      emailSection.style.display = admin ? "block" : "none";
+      emailSection.classList.toggle("hidden", !admin);
     }
     if (adminLinkSection) {
-      adminLinkSection.style.display = admin ? "block" : "none";
+      adminLinkSection.classList.toggle("hidden", !admin);
     }
   });
   

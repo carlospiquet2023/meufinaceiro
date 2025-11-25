@@ -37,7 +37,7 @@
     </header>
 
     <main>
-      <section class="card" id="access-denied" style="display:none;">
+      <section class="card hidden" id="access-denied">
         <h2>⛔ Acesso Negado</h2>
         <p>Você precisa ser administrador para acessar esta página.</p>
         <a href="index.html" class="btn">Voltar ao Dashboard</a>
@@ -80,7 +80,7 @@
         <div class="button-group">
           <button class="btn" data-action="make-admin">Tornar Admin</button>
         </div>
-        <div class="notice mt-md" id="adminResult" style="display:none;"></div>
+        <div class="notice mt-md hidden" id="adminResult"></div>
       </section>
     </main>
 
@@ -116,8 +116,8 @@
       const adminCheck = await isAdmin();
       
       if (!adminCheck) {
-        document.getElementById("access-denied").style.display = "block";
-        document.getElementById("admin-panel").style.display = "none";
+        document.getElementById("access-denied").classList.remove("hidden");
+        document.getElementById("admin-panel").classList.add("hidden");
       } else {
         loadUsers();
       }
@@ -155,18 +155,18 @@
         
         if (!email) {
           result.textContent = "Digite um e-mail válido";
-          result.style.display = "block";
+          result.classList.remove("hidden");
           return;
         }
         
         try {
           await makeAdmin(email);
           result.textContent = `✅ ${email} agora é administrador! Faça login novamente.`;
-          result.style.display = "block";
+          result.classList.remove("hidden");
           loadUsers();
         } catch (err) {
           result.textContent = `❌ Erro: ${err.message}`;
-          result.style.display = "block";
+          result.classList.remove("hidden");
         }
       });
     </script>

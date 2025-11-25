@@ -25,7 +25,7 @@
 
 ## Arquitetura
 
-```
+```text
 /assets
   /css
     style.css
@@ -36,13 +36,12 @@
     email.js
     whatsapp.js
     charts.js
+    auth.js
   /img
     (logos, ícones)
 /automation
-  whatsapp-bot.js
+  baileys-bot.js
   venom-bot.js
-/backup
-  (saídas CSV/JSON geradas em runtime)
 /docs
   overview.md
 index.html
