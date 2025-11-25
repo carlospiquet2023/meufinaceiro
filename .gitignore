@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+automation/node_modules/
+
+# Auth
+automation/auth/
+automation/auth.json
+automation/tokens/
+
+# Env
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*

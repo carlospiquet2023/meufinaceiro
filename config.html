@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Meufin • Configurações</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/png" href="assets/img/icon-192.png" />
+    <link rel="apple-touch-icon" href="assets/img/icon-192.png" />
+    <script defer src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  </head>
+  <body data-page="config">
+    <header>
+      <div class="main-header">
+        <div class="brand">
+          <h1>Configurações & Integrações</h1>
+          <span>Personalize categorias, metas, EmailJS e WhatsApp.</span>
+        </div>
+        <nav class="nav-links">
+          <a href="index.html">Dashboard</a>
+          <a href="entradas.html">Transações</a>
+          <a href="relatorio.html">Relatórios</a>
+          <a href="config.html">Configurações</a>
+        </nav>
+        <label class="toggle">
+          <input type="checkbox" id="themeToggle" />
+          Modo escuro
+        </label>
+      </div>
+    </header>
+
+    <main>
+      <section class="card">
+        <div class="section-title">
+          <h2>Preferências gerais</h2>
+        </div>
+        <div class="form-grid">
+          <div class="field">
+            <label for="nomeUsuario">Nome do usuário</label>
+            <input id="nomeUsuario" type="text" placeholder="Ex.: Carlos" />
+          </div>
+          <div class="field">
+            <label for="metaEconomia">Meta mensal de economia (R$)</label>
+            <input id="metaEconomia" type="number" min="0" step="0.01" />
+          </div>
+          <div class="field">
+            <label for="objetivoDescricao">Objetivo financeiro</label>
+            <textarea id="objetivoDescricao" rows="3" placeholder="Ex.: Fundo emergência"></textarea>
+          </div>
+          <div class="field">
+            <label for="objetivoValor">Meta alvo (R$)</label>
+            <input id="objetivoValor" type="number" min="0" step="0.01" />
+          </div>
+        </div>
+        <div class="button-group">
+          <button class="btn" data-action="salvar-config">Salvar</button>
+          <button class="btn secondary" data-action="resetar-config">Restaurar padrão</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-title">
+          <h2>Integração EmailJS</h2>
+        </div>
+        <div class="form-grid">
+          <div class="field">
+            <label for="emailService">Service ID</label>
+            <input id="emailService" type="text" autocomplete="off" value="service_90wte0r" />
+          </div>
+          <div class="field">
+            <label for="emailTemplate">Template ID</label>
+            <input id="emailTemplate" type="text" autocomplete="off" value="template_meufin" />
+          </div>
+          <div class="field">
+            <label for="emailPublic">Chave pública</label>
+            <input id="emailPublic" type="password" autocomplete="off" value="8M3uFdjiAMS5gV30w" />
+          </div>
+          <div class="field">
+            <label for="emailPrivate">Chave privada</label>
+            <input id="emailPrivate" type="password" autocomplete="off" value="0X93fhrwEn9vVMMLvmur4" />
+          </div>
+        </div>
+        <div class="notice mt-md">
+          As chaves ficam apenas neste dispositivo (IndexedDB). Não publique em produção.
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-title">
+          <h2>WhatsApp Web Automation</h2>
+        </div>
+        <div class="form-grid">
+          <div class="field">
+            <label for="whatsNumero">Número (DDD + telefone)</label>
+            <input id="whatsNumero" type="tel" placeholder="11 99999-9999" />
+            <small>O app prefixará +55 automaticamente.</small>
+          </div>
+          <div class="field">
+            <label for="whatsMetodo">Biblioteca de envio</label>
+            <select id="whatsMetodo">
+              <option value="baileys">Baileys</option>
+              <option value="venom">Venom-Bot</option>
+              <option value="wppconnect">WPPConnect</option>
+              <option value="puppeteer">Puppeteer</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="webhookUrl">Endpoint local</label>
+            <input id="webhookUrl" type="url" placeholder="http://localhost:3333/send-whatsapp" />
+          </div>
+        </div>
+        <div class="button-group">
+          <button class="btn" data-action="testar-whatsapp">Testar envio</button>
+          <button class="btn secondary" data-action="baixar-bot">Abrir guia do bot</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-title">
+          <h2>Notificações & lembretes</h2>
+        </div>
+        <div class="form-grid">
+          <div class="field">
+            <label class="toggle">
+              <input type="checkbox" id="notificarVencimentos" />
+              Notificar contas a pagar
+            </label>
+          </div>
+          <div class="field">
+            <label class="toggle">
+              <input type="checkbox" id="notificarObjetivos" />
+              Notificar progresso das metas
+            </label>
+          </div>
+          <div class="field">
+            <label for="lembreteHorario">Horário do lembrete</label>
+            <input id="lembreteHorario" type="time" />
+          </div>
+        </div>
+        <div class="button-group">
+          <button class="btn" type="button" data-action="ativar-notificacoes">Ativar notificações locais</button>
+        </div>
+      </section>
+    </main>
+
+    <footer>Configurações sincronizadas no próprio dispositivo.</footer>
+    <script type="module" src="assets/js/app.js"></script>
+  </body>
+</html>

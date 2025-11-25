@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Meufin • Relatórios</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/png" href="assets/img/icon-192.png" />
+    <link rel="apple-touch-icon" href="assets/img/icon-192.png" />
+    <script defer src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  </head>
+  <body data-page="relatorio">
+    <header>
+      <div class="main-header">
+        <div class="brand">
+          <h1>Relatórios</h1>
+          <span>PDF profissional + compartilhamento instantâneo.</span>
+        </div>
+        <nav class="nav-links">
+          <a href="index.html">Dashboard</a>
+          <a href="entradas.html">Transações</a>
+          <a href="relatorio.html">Relatórios</a>
+          <a href="config.html">Configurações</a>
+        </nav>
+        <label class="toggle">
+          <input type="checkbox" id="themeToggle" />
+          Modo escuro
+        </label>
+      </div>
+    </header>
+
+    <main>
+      <section class="card">
+        <div class="section-title">
+          <h2>Gerar novo relatório</h2>
+          <div>
+            <button class="btn" data-action="gerar-pdf">Gerar PDF</button>
+            <button class="btn secondary" data-action="enviar-email">Enviar Email</button>
+            <button class="btn secondary" data-action="enviar-whatsapp">WhatsApp</button>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="field">
+            <label for="periodoInicio">Período inicial</label>
+            <input type="date" id="periodoInicio" />
+          </div>
+          <div class="field">
+            <label for="periodoFim">Período final</label>
+            <input type="date" id="periodoFim" />
+          </div>
+          <div class="field">
+            <label for="resumoCustom">Resumo personalizado</label>
+            <textarea id="resumoCustom" rows="3" placeholder="Destaques, ações e lembretes"></textarea>
+          </div>
+          <div class="field">
+            <label for="incluirGraficos">Incluir gráficos</label>
+            <select id="incluirGraficos">
+              <option value="todos">Todos</option>
+              <option value="pizza">Somente pizza</option>
+              <option value="linha">Somente linha</option>
+            </select>
+          </div>
+        </div>
+        <div class="notice mt-md">
+          Relatórios ficam salvos offline em IndexedDB para reenvio rápido.
+        </div>
+      </section>
+
+      <section>
+        <div class="section-title">
+          <h2>Histórico de relatórios</h2>
+          <button class="btn secondary" data-action="limpar-relatorios">Limpar históricos</button>
+        </div>
+        <div class="card table-card">
+          <table>
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Período</th>
+                <th>Saúde %</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody data-table="relatorios">
+              <tr>
+                <td colspan="5">Nenhum relatório gerado ainda.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-title">
+          <h2>Preview rápido</h2>
+        </div>
+        <div class="card" id="relatorioPreview">
+          <p>Pré-visualização aparecerá aqui após gerar dados.</p>
+          <div class="button-group">
+            <button class="btn secondary" data-action="download-csv">Baixar CSV</button>
+            <button class="btn secondary" data-action="baixar-pdf">Download PDF</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>Exportação profissional com jsPDF + EmailJS + WhatsApp.</footer>
+    <script type="module" src="assets/js/app.js"></script>
+  </body>
+</html>

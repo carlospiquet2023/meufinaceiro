@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Meufin • Transações</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/png" href="assets/img/icon-192.png" />
+    <link rel="apple-touch-icon" href="assets/img/icon-192.png" />
+    <script defer src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  </head>
+  <body data-page="entradas">
+    <header>
+      <div class="main-header">
+        <div class="brand">
+          <h1>Transações</h1>
+          <span>Entradas, saídas e recorrências.</span>
+        </div>
+        <nav class="nav-links">
+          <a href="index.html">Dashboard</a>
+          <a href="entradas.html">Transações</a>
+          <a href="relatorio.html">Relatórios</a>
+          <a href="config.html">Configurações</a>
+        </nav>
+        <label class="toggle">
+          <input type="checkbox" id="themeToggle" />
+          Modo escuro
+        </label>
+      </div>
+    </header>
+
+    <main>
+      <section class="card">
+        <div class="section-title">
+          <h2>Nova Transação</h2>
+          <small>Todos os campos são obrigatórios.</small>
+        </div>
+        <form id="transactionForm" class="form-grid">
+          <div class="field">
+            <label for="tipo">Tipo</label>
+            <select id="tipo" name="tipo" required>
+              <option value="entrada">Entrada</option>
+              <option value="saida">Saída</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="categoria">Categoria</label>
+            <select id="categoria" name="categoria" required data-source="categorias"></select>
+          </div>
+
+          <div class="field">
+            <label for="descricao">Descrição</label>
+            <input id="descricao" name="descricao" type="text" placeholder="Ex.: Salário" required />
+          </div>
+
+          <div class="field">
+            <label for="valor">Valor</label>
+            <input id="valor" name="valor" type="number" min="0" step="0.01" placeholder="0,00" required />
+          </div>
+
+          <div class="field">
+            <label for="data">Data</label>
+            <input id="data" name="data" type="date" required />
+          </div>
+
+          <div class="field">
+            <label for="fixo">Transação fixa?</label>
+            <select id="fixo" name="fixo">
+              <option value="false">Não</option>
+              <option value="true">Sim (repete mensal)</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="parcelas">Automação mensal</label>
+            <input id="parcelas" name="parcelas" type="number" min="1" max="24" value="1" />
+            <small>Qtd de repetições mensais (1 = única).</small>
+          </div>
+
+          <div class="field">
+            <label for="anotacoes">Notas</label>
+            <textarea id="anotacoes" name="anotacoes" rows="3" placeholder="Tags, lembretes..."></textarea>
+          </div>
+        </form>
+        <div class="button-group">
+          <button class="btn" type="submit" form="transactionForm">Salvar</button>
+          <button class="btn secondary" type="button" data-action="limpar-form">Limpar</button>
+          <button class="btn secondary" type="button" data-action="importar-json">Restaurar backup</button>
+          <button class="btn secondary" type="button" data-action="exportar-json">Backup JSON</button>
+        </div>
+      </section>
+
+      <section id="lista">
+        <div class="section-title">
+          <h2>Transações recentes</h2>
+          <div>
+            <label class="sr-only" for="filtroPeriodo">Filtrar período</label>
+            <select id="filtroPeriodo" data-filter="periodo" class="btn secondary">
+              <option value="mes">Mês atual</option>
+              <option value="30dias">Últimos 30 dias</option>
+              <option value="90dias">Últimos 90 dias</option>
+              <option value="todos">Todos</option>
+            </select>
+            <button class="btn" data-action="exportar-csv">Exportar CSV</button>
+          </div>
+        </div>
+        <div class="card table-card">
+          <table>
+            <thead>
+              <tr>
+                <th>Tipo</th>
+                <th>Categoria</th>
+                <th>Descrição</th>
+                <th>Data</th>
+                <th>Valor</th>
+                <th>Fixo</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody data-table="transacoes">
+              <tr>
+                <td colspan="7">Sem registros.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer>Controle diário de entradas e saídas.</footer>
+    <script type="module" src="assets/js/app.js"></script>
+  </body>
+</html>

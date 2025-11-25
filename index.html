@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Meufin • Dashboard</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/png" href="assets/img/icon-192.png" />
+    <link rel="apple-touch-icon" href="assets/img/icon-192.png" />
+    <script defer src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
+  </head>
+  <body data-page="dashboard">
+    <header>
+      <div class="main-header">
+        <div class="brand">
+          <h1>Meufin</h1>
+          <span>Finanças pessoais simples, rápidas e offline.</span>
+        </div>
+        <nav class="nav-links">
+          <a href="index.html">Dashboard</a>
+          <a href="entradas.html">Transações</a>
+          <a href="relatorio.html">Relatórios</a>
+          <a href="config.html">Configurações</a>
+        </nav>
+        <label class="toggle">
+          <input type="checkbox" id="themeToggle" />
+          Modo escuro
+        </label>
+      </div>
+    </header>
+
+    <main>
+      <section class="card-grid" aria-label="Indicadores principais">
+        <article class="card" data-card="saldo">
+          <h3>Saldo Atual</h3>
+          <strong data-value="saldo">R$ 0,00</strong>
+          <span class="trend" data-trend="saldo">--</span>
+        </article>
+        <article class="card" data-card="entradas">
+          <h3>Total Entradas</h3>
+          <strong data-value="entradas">R$ 0,00</strong>
+          <span class="trend" data-trend="entradas">--</span>
+        </article>
+        <article class="card" data-card="saidas">
+          <h3>Total Saídas</h3>
+          <strong data-value="saidas">R$ 0,00</strong>
+          <span class="trend" data-trend="saidas">--</span>
+        </article>
+        <article class="card" data-card="saude">
+          <h3>Saúde Financeira</h3>
+          <strong data-value="saude">0%</strong>
+          <span class="badge" data-badge="saude">--</span>
+        </article>
+      </section>
+
+      <section>
+        <div class="section-title">
+          <h2>Gráficos Inteligentes</h2>
+          <div>
+            <button class="btn" data-action="nova-transacao">Nova transação</button>
+            <button class="btn secondary" data-action="gerar-relatorio">Gerar PDF</button>
+          </div>
+        </div>
+        <div class="charts-grid">
+          <article class="card chart-card">
+            <h3>Entradas vs Saídas</h3>
+            <canvas id="chartEntradasSaidas"></canvas>
+          </article>
+          <article class="card chart-card">
+            <h3>Evolução Últimos Meses</h3>
+            <canvas id="chartHistorico"></canvas>
+          </article>
+          <article class="card chart-card">
+            <h3>Saúde Financeira</h3>
+            <canvas id="chartSaude"></canvas>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-title">
+          <h2>Valor a pagar no mês</h2>
+          <button class="btn secondary" data-action="ver-todas">Ver todas</button>
+        </div>
+        <div class="card table-card">
+          <table>
+            <thead>
+              <tr>
+                <th>Descrição</th>
+                <th>Categoria</th>
+                <th>Vencimento</th>
+                <th>Valor</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody data-table="pagamentos">
+              <tr>
+                <td colspan="5">Nenhuma despesa neste mês.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-title">
+          <h2>Insights</h2>
+          <button class="btn secondary" data-action="exportar-csv">Exportar CSV</button>
+        </div>
+        <div class="card-grid">
+          <article class="card">
+            <h3>Projeção Financeira</h3>
+            <p data-insight="projecao">Calcule suas médias ao registrar transações.</p>
+          </article>
+          <article class="card">
+            <h3>Alertas Inteligentes</h3>
+            <p data-insight="alerta">Nenhum alerta no momento.</p>
+          </article>
+          <article class="card">
+            <h3>Objetivos</h3>
+            <p data-insight="objetivos">Defina metas em Configurações.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer>Meufin • PWA financeiro offline-first</footer>
+
+    <script type="module" src="assets/js/app.js"></script>
+  </body>
+</html>
