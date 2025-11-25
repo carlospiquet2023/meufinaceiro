@@ -41,7 +41,7 @@ export async function sendEmailReport({ serviceId, templateId, publicKey, privat
 
   try {
     const emailjs = getEmailJS();
-    await emailjs.send(serviceId, templateId, payload, privateKey);
+    await emailjs.send(serviceId, templateId, payload, publicKey);
     return { queued: false };
   } catch (error) {
     const queue = readQueue();

@@ -530,6 +530,16 @@ async function handleRelatorioPage() {
   if (page !== "relatorio") return;
   await loadReports();
 
+  // Initialize charts for report page
+  initDashboardCharts();
+  const { entradas, saidas, historico, saude } = calculateDashboardMetrics();
+  updateDashboardCharts({
+    entradas,
+    saidas,
+    historico,
+    saude,
+  });
+
   document
     .querySelector("[data-action=gerar-pdf]")
     ?.addEventListener("click", gerarPdfAtual);
