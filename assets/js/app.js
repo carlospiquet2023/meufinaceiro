@@ -124,7 +124,17 @@ function computeMetrics(transactions) {
     ultimos3.length > 0 ? ultimos3.reduce((acc, val) => acc + val, 0) / ultimos3.length : 0;
 
   const tendencia = historico.length >= 2 ? historico.at(-1).valor - historico.at(-2).valor : 0;
-  const saude = saidas === 0 ? 100 : (entradas / saidas) * 100;
+  
+  // Saúde financeira: % de economia sobre as entradas
+  // 100% = não gastou nada, 0% = gastou tudo, negativo = gastou mais do que ganhou
+  let saude = 0;
+  if (entradas > 0) {
+    saude = ((entradas - saidas) / entradas) * 100;
+  } else if (saidas > 0) {
+    saude = -100; // Sem entradas mas com saídas = negativo
+  } else {
+    saude = 100; // Sem movimentação = neutro
+  }
 
   return {
     entradas,
@@ -139,9 +149,14 @@ function computeMetrics(transactions) {
 }
 
 function badgeByHealth(value) {
-  if (value >= 130) return { text: "Excelente", className: "badge success" };
-  if (value >= 100) return { text: "Boa", className: "badge success" };
-  if (value >= 80) return { text: "Alerta", className: "badge warning" };
+  // value = % de economia (quanto sobrou das entradas)
+  // 50%+ = Excelente (economizou mais da metade)
+  // 20-50% = Boa (economizou uma parte)
+  // 0-20% = Alerta (gastou quase tudo)
+  // <0% = Perigo (gastou mais do que ganhou)
+  if (value >= 50) return { text: "Excelente", className: "badge success" };
+  if (value >= 20) return { text: "Boa", className: "badge success" };
+  if (value >= 0) return { text: "Alerta", className: "badge warning" };
   return { text: "Perigo", className: "badge danger" };
 }
 
@@ -190,11 +205,15 @@ function updateDashboardUI() {
             <td>${new Date(tx.data).toLocaleDateString("pt-BR")}</td>
             <td>${formatCurrency(tx.valor)}</td>
             <td>${tx.fixo ? "Fixo" : "Único"}</td>
+            <td>
+              <button class="btn secondary" data-action="editar" data-id="${tx.id}">Editar</button>
+              <button class="btn secondary" data-action="excluir" data-id="${tx.id}">Excluir</button>
+            </td>
           </tr>
         `
           )
           .join("")
-      : "<tr><td colspan=5>Nenhuma despesa neste mês.</td></tr>";
+      : "<tr><td colspan=6>Nenhuma despesa neste mês.</td></tr>";
   }
 
   initDashboardCharts();
@@ -213,12 +232,14 @@ function updateDashboardUI() {
 
   const alertaEl = document.querySelector("[data-insight=alerta]");
   if (alertaEl) {
-    if (saude < 80) {
-      alertaEl.textContent = "Perigo: reduza despesas ou aumente entradas nesta semana.";
-    } else if (saude < 100) {
-      alertaEl.textContent = "Alerta: acompanhe categorias variáveis para evitar déficit.";
+    if (saude < 0) {
+      alertaEl.textContent = "⚠️ Perigo: você está gastando mais do que ganha! Reduza despesas urgentemente.";
+    } else if (saude < 20) {
+      alertaEl.textContent = "⚡ Alerta: economizando pouco. Revise seus gastos variáveis.";
+    } else if (saude < 50) {
+      alertaEl.textContent = "👍 Bom: você está economizando, mas pode melhorar.";
     } else {
-      alertaEl.textContent = "Tudo em ordem. Continue registrando para manter o histórico.";
+      alertaEl.textContent = "🎉 Excelente! Você está economizando bem. Continue assim!";
     }
   }
 
@@ -692,6 +713,18 @@ function registerGlobalActions() {
         alert("Gere um relatório primeiro");
       }
     });
+
+  document.body.addEventListener("click", async (event) => {
+    const excluirBtn = event.target.closest("[data-action=excluir]");
+    if (excluirBtn) {
+      await deleteTransaction(Number(excluirBtn.dataset.id));
+      refreshTransactions();
+    }
+    const editarBtn = event.target.closest("[data-action=editar]");
+    if (editarBtn) {
+      window.location.href = "entradas.html";
+    }
+  });
 }
 
 function registerServiceWorker() {

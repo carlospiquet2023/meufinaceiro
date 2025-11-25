@@ -1,11 +1,15 @@
 import { saveReport } from "./db.js";
 
 function getJsPDF() {
-  const { jsPDF } = window.jspdf || {};
-  if (!jsPDF) {
-    throw new Error("jsPDF não encontrado. Garanta o script no relatorio.html");
+  // Tentar acessar jsPDF de diferentes formas
+  const jspdfLib = window.jspdf || window.jsPDF;
+  if (jspdfLib && jspdfLib.jsPDF) {
+    return jspdfLib.jsPDF;
   }
-  return jsPDF;
+  if (typeof jsPDF !== 'undefined') {
+    return jsPDF;
+  }
+  throw new Error("jsPDF não encontrado. Recarregue a página ou verifique sua conexão.");
 }
 
 async function canvasToDataUrl(canvasId) {
