@@ -36,9 +36,10 @@ const defaultConfig = {
     "Outros",
   ],
   emailService: "service_90wte0r",
-  emailTemplate: "template_meufin",
+  emailTemplate: "template_cyr3pt8",
   emailPublic: "8M3uFdjiAMS5gV30w",
   emailPrivate: "0X93fhrwEn9vVMMLvmur4",
+  emailDestinatario: "",
   whatsNumero: "",
   whatsMetodo: "baileys",
   webhookUrl: "http://localhost:3333/send-whatsapp",
@@ -419,6 +420,7 @@ function fillConfigPage() {
     emailTemplate: "emailTemplate",
     emailPublic: "emailPublic",
     emailPrivate: "emailPrivate",
+    emailDestinatario: "emailDestinatario",
     whatsNumero: "whatsNumero",
     whatsMetodo: "whatsMetodo",
     webhookUrl: "webhookUrl",
@@ -580,7 +582,13 @@ function renderPreview(base64) {
 async function enviarEmailAtual() {
   const pdf = await gerarPdfAtual();
   if (!pdf) return;
+  const destinatario = state.config.emailDestinatario;
+  if (!destinatario) {
+    alert("Configure o e-mail destinatário em Configurações");
+    return;
+  }
   const payload = {
+    to_email: destinatario,
     user: state.config.nomeUsuario || "Usuário",
     resumo: mediaResumoText(state.metrics.media3m, state.metrics.tendencia),
     pdf: pdf.base64,
@@ -592,20 +600,25 @@ async function enviarEmailAtual() {
     privateKey: state.config.emailPrivate,
     payload,
   });
-  alert(result.queued ? "Sem conexão, e-mail enfileirado" : "E-mail enviado");
+  alert(result.queued ? "Sem conexão, e-mail enfileirado" : "E-mail enviado para " + destinatario);
 }
 
 async function enviarWhatsAppAtual() {
   const pdf = await gerarPdfAtual();
   if (!pdf) return;
+  const numero = state.config.whatsNumero;
+  if (!numero) {
+    alert("Configure o número do WhatsApp em Configurações");
+    return;
+  }
   try {
     await sendWhatsApp({
       endpoint: state.config.webhookUrl,
-      numero: state.config.whatsNumero,
+      numero,
       mensagem: `Relatório financeiro ${buildPeriodo()}`,
       pdfBase64: pdf.base64,
     });
-    alert("WhatsApp enviado");
+    alert("WhatsApp enviado para +55" + numero.replace(/\D/g, ""));
   } catch (error) {
     alert(error.message);
   }
