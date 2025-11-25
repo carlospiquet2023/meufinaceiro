@@ -9,13 +9,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="manifest" href="manifest.webmanifest" />
-    <link rel="icon" type="image/png" href="assets/img/icon-192.png" />
-    <link rel="apple-touch-icon" href="assets/img/icon-192.png" />
-    <script defer src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <link rel="icon" type="image/svg+xml" href="assets/img/icon-192.svg" />
+    <link rel="apple-touch-icon" href="assets/img/icon-192.svg" />
+    <!-- Bibliotecas carregadas síncronas para garantir disponibilidade -->
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   </head>
   <body data-page="relatorio">
     <header>
@@ -30,6 +31,10 @@
           <a href="relatorio.html">Relatórios</a>
           <a href="config.html">Configurações</a>
         </nav>
+        <div class="user-area">
+          <span data-user-name></span>
+          <button class="btn secondary small" data-action="logout">Sair</button>
+        </div>
         <label class="toggle">
           <input type="checkbox" id="themeToggle" />
           Modo escuro

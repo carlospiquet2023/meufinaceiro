@@ -12,9 +12,13 @@ import { initDashboardCharts, updateDashboardCharts } from "./charts.js";
 import { generateFinancialPdf, persistReport } from "./report.js";
 import { sendEmailReport, flushEmailQueue } from "./email.js";
 import { sendWhatsApp } from "./whatsapp.js";
+import { getCurrentSession, logout, isAdmin } from "./auth.js";
 
 const body = document.body;
 const page = body.dataset.page;
+
+// Session state
+let currentSession = null;
 const NOTIFY_KEY = "meufin_notify";
 
 const defaultConfig = {
@@ -411,6 +415,20 @@ function initThemeToggle() {
 
 function fillConfigPage() {
   if (page !== "config") return;
+  
+  // Ocultar seção de integração EmailJS para não-admin
+  // E mostrar link admin para administradores
+  isAdmin().then((admin) => {
+    const emailSection = document.getElementById("emailjs-section");
+    const adminLinkSection = document.getElementById("admin-link-section");
+    if (emailSection) {
+      emailSection.style.display = admin ? "block" : "none";
+    }
+    if (adminLinkSection) {
+      adminLinkSection.style.display = admin ? "block" : "none";
+    }
+  });
+  
   const map = {
     nomeUsuario: "nomeUsuario",
     metaEconomia: "metaEconomia",
@@ -744,6 +762,22 @@ function maybeNotifyUpcoming() {
 }
 
 async function bootstrap() {
+  // Verificar autenticação
+  currentSession = await getCurrentSession();
+  if (!currentSession && page !== "login") {
+    window.location.href = "login.html";
+    return;
+  }
+  
+  // Mostrar nome do usuário no header se existir
+  const userDisplay = document.querySelector("[data-user-name]");
+  if (userDisplay && currentSession) {
+    userDisplay.textContent = currentSession.nome || currentSession.email;
+  }
+  
+  // Botão de logout
+  document.querySelector("[data-action=logout]")?.addEventListener("click", logout);
+  
   await initDB();
   const configFromDb = await getConfig();
   state.config = { ...defaultConfig, ...(configFromDb || {}) };

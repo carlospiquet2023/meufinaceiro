@@ -9,9 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="manifest" href="manifest.webmanifest" />
-    <link rel="icon" type="image/png" href="assets/img/icon-192.png" />
-    <link rel="apple-touch-icon" href="assets/img/icon-192.png" />
-    <script defer src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <link rel="icon" type="image/svg+xml" href="assets/img/icon-192.svg" />
+    <link rel="apple-touch-icon" href="assets/img/icon-192.svg" />
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   </head>
   <body data-page="config">
     <header>
@@ -26,6 +26,10 @@
           <a href="relatorio.html">Relatórios</a>
           <a href="config.html">Configurações</a>
         </nav>
+        <div class="user-area">
+          <span data-user-name></span>
+          <button class="btn secondary small" data-action="logout">Sair</button>
+        </div>
         <label class="toggle">
           <input type="checkbox" id="themeToggle" />
           Modo escuro
@@ -62,9 +66,9 @@
         </div>
       </section>
 
-      <section class="card">
+      <section class="card" id="emailjs-section" style="display:none;">
         <div class="section-title">
-          <h2>Integração EmailJS</h2>
+          <h2>🔒 Integração EmailJS (Admin)</h2>
         </div>
         <div class="form-grid">
           <div class="field">
@@ -147,6 +151,16 @@
         </div>
         <div class="button-group">
           <button class="btn" type="button" data-action="ativar-notificacoes">Ativar notificações locais</button>
+        </div>
+      </section>
+
+      <section class="card" id="admin-link-section" style="display:none;">
+        <div class="section-title">
+          <h2>🔒 Área Administrativa</h2>
+        </div>
+        <p>Você tem permissões de administrador.</p>
+        <div class="button-group">
+          <a href="admin.html" class="btn">Gerenciar Usuários</a>
         </div>
       </section>
     </main>

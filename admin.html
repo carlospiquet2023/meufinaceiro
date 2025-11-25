@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Meufin • Admin</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="assets/img/icon-192.svg" />
+    <link rel="apple-touch-icon" href="assets/img/icon-192.svg" />
+  </head>
+  <body data-page="admin">
+    <header>
+      <div class="main-header">
+        <div class="brand">
+          <h1>🔒 Admin</h1>
+          <span>Gerenciamento de usuários</span>
+        </div>
+        <nav class="nav-links">
+          <a href="index.html">Dashboard</a>
+          <a href="entradas.html">Transações</a>
+          <a href="relatorio.html">Relatórios</a>
+          <a href="config.html">Configurações</a>
+        </nav>
+        <div class="user-area">
+          <span data-user-name></span>
+          <button class="btn secondary small" data-action="logout">Sair</button>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="themeToggle" />
+          Modo escuro
+        </label>
+      </div>
+    </header>
+
+    <main>
+      <section class="card" id="access-denied" style="display:none;">
+        <h2>⛔ Acesso Negado</h2>
+        <p>Você precisa ser administrador para acessar esta página.</p>
+        <a href="index.html" class="btn">Voltar ao Dashboard</a>
+      </section>
+
+      <section class="card" id="admin-panel">
+        <div class="section-title">
+          <h2>Usuários Cadastrados</h2>
+          <button class="btn" data-action="refresh-users">Atualizar</button>
+        </div>
+        <div class="table-card">
+          <table>
+            <thead>
+              <tr>
+                <th>E-mail</th>
+                <th>Nome</th>
+                <th>Admin</th>
+                <th>Data Cadastro</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody data-table="users">
+              <tr><td colspan="5">Carregando...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-title">
+          <h2>Criar Primeiro Admin</h2>
+        </div>
+        <p>Se você é o primeiro usuário, use este formulário para se tornar admin.</p>
+        <div class="form-grid">
+          <div class="field">
+            <label for="adminEmail">E-mail do usuário</label>
+            <input id="adminEmail" type="email" placeholder="seu@email.com" />
+          </div>
+        </div>
+        <div class="button-group">
+          <button class="btn" data-action="make-admin">Tornar Admin</button>
+        </div>
+        <div class="notice mt-md" id="adminResult" style="display:none;"></div>
+      </section>
+    </main>
+
+    <script type="module">
+      import { getCurrentSession, logout, isAdmin, makeAdmin, listUsers } from "./assets/js/auth.js";
+      
+      const session = await getCurrentSession();
+      const userDisplay = document.querySelector("[data-user-name]");
+      
+      if (!session) {
+        window.location.href = "login.html";
+      }
+      
+      if (userDisplay && session) {
+        userDisplay.textContent = session.nome || session.email;
+      }
+      
+      document.querySelector("[data-action=logout]")?.addEventListener("click", logout);
+      
+      // Theme toggle
+      const toggle = document.getElementById("themeToggle");
+      if (toggle) {
+        const savedTheme = localStorage.getItem("meufin_theme") || "light";
+        document.documentElement.dataset.theme = savedTheme;
+        toggle.checked = savedTheme === "dark";
+        toggle.addEventListener("change", () => {
+          const theme = toggle.checked ? "dark" : "light";
+          document.documentElement.dataset.theme = theme;
+          localStorage.setItem("meufin_theme", theme);
+        });
+      }
+      
+      const adminCheck = await isAdmin();
+      
+      if (!adminCheck) {
+        document.getElementById("access-denied").style.display = "block";
+        document.getElementById("admin-panel").style.display = "none";
+      } else {
+        loadUsers();
+      }
+      
+      async function loadUsers() {
+        const users = await listUsers();
+        const table = document.querySelector("[data-table=users]");
+        if (!table) return;
+        
+        table.innerHTML = users.length ? users.map(u => `
+          <tr>
+            <td>${u.email}</td>
+            <td>${u.nome}</td>
+            <td>${u.isAdmin ? "✅ Sim" : "❌ Não"}</td>
+            <td>${new Date(u.createdAt).toLocaleDateString("pt-BR")}</td>
+            <td>
+              ${!u.isAdmin ? `<button class="btn secondary small" data-promote="${u.email}">Tornar Admin</button>` : "-"}
+            </td>
+          </tr>
+        `).join("") : "<tr><td colspan=5>Nenhum usuário cadastrado.</td></tr>";
+        
+        table.querySelectorAll("[data-promote]").forEach(btn => {
+          btn.addEventListener("click", async () => {
+            await makeAdmin(btn.dataset.promote);
+            loadUsers();
+          });
+        });
+      }
+      
+      document.querySelector("[data-action=refresh-users]")?.addEventListener("click", loadUsers);
+      
+      document.querySelector("[data-action=make-admin]")?.addEventListener("click", async () => {
+        const email = document.getElementById("adminEmail").value;
+        const result = document.getElementById("adminResult");
+        
+        if (!email) {
+          result.textContent = "Digite um e-mail válido";
+          result.style.display = "block";
+          return;
+        }
+        
+        try {
+          await makeAdmin(email);
+          result.textContent = `✅ ${email} agora é administrador! Faça login novamente.`;
+          result.style.display = "block";
+          loadUsers();
+        } catch (err) {
+          result.textContent = `❌ Erro: ${err.message}`;
+          result.style.display = "block";
+        }
+      });
+    </script>
+  </body>
+</html>

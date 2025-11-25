@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Meufin • Login</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="assets/img/icon-192.svg" />
+    <style>
+      .login-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-surface) 100%);
+      }
+      .login-box {
+        background: var(--color-surface);
+        padding: 2.5rem;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px var(--color-card-shadow);
+        width: 100%;
+        max-width: 400px;
+      }
+      .login-box h1 {
+        text-align: center;
+        margin-bottom: 0.5rem;
+        color: var(--color-primary);
+      }
+      .login-box p {
+        text-align: center;
+        color: var(--color-muted);
+        margin-bottom: 2rem;
+      }
+      .login-box .field {
+        margin-bottom: 1.25rem;
+      }
+      .login-box input {
+        width: 100%;
+      }
+      .login-box .btn {
+        width: 100%;
+        margin-top: 1rem;
+      }
+      .login-tabs {
+        display: flex;
+        gap: 0;
+        margin-bottom: 1.5rem;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid rgba(15, 76, 117, 0.2);
+      }
+      .login-tabs button {
+        flex: 1;
+        padding: 0.75rem;
+        border: none;
+        background: var(--color-bg);
+        color: var(--color-text);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .login-tabs button.active {
+        background: var(--color-primary);
+        color: #fff;
+      }
+      .tab-content {
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      .error-msg {
+        color: #c62828;
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+        display: none;
+      }
+      .success-msg {
+        color: #2e7d32;
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+        display: none;
+      }
+      .forgot-link {
+        display: block;
+        text-align: center;
+        margin-top: 1rem;
+        color: var(--color-primary);
+        cursor: pointer;
+        font-size: 0.9rem;
+      }
+      .forgot-link:hover {
+        text-decoration: underline;
+      }
+      #resetSenhaForm {
+        display: none;
+        margin-top: 1rem;
+      }
+      #resetSenhaForm.visible {
+        display: block;
+      }
+    </style>
+  </head>
+  <body data-page="login">
+    <div class="login-container">
+      <div class="login-box">
+        <h1>💰 Meufin</h1>
+        <p>Sua vida financeira sob controle</p>
+
+        <div class="login-tabs">
+          <button class="active" data-tab="login">Entrar</button>
+          <button data-tab="cadastro">Cadastrar</button>
+          <button data-tab="recuperar">Recuperar</button>
+        </div>
+
+        <!-- Tab Login -->
+        <div id="tab-login" class="tab-content active">
+          <form id="loginForm">
+            <div class="field">
+              <label for="loginEmail">E-mail</label>
+              <input id="loginEmail" type="email" placeholder="seu@email.com" required />
+            </div>
+            <div class="field">
+              <label for="loginSenha">Senha</label>
+              <input id="loginSenha" type="password" placeholder="••••••••" required />
+            </div>
+            <div class="error-msg" id="loginError"></div>
+            <button type="submit" class="btn">Entrar</button>
+          </form>
+          <span class="forgot-link" data-tab="recuperar">Esqueceu a senha?</span>
+        </div>
+
+        <!-- Tab Cadastro -->
+        <div id="tab-cadastro" class="tab-content">
+          <form id="cadastroForm">
+            <div class="field">
+              <label for="cadNome">Nome completo</label>
+              <input id="cadNome" type="text" placeholder="Seu nome" required />
+            </div>
+            <div class="field">
+              <label for="cadEmail">E-mail</label>
+              <input id="cadEmail" type="email" placeholder="seu@email.com" required />
+            </div>
+            <div class="field">
+              <label for="cadSenha">Senha</label>
+              <input id="cadSenha" type="password" placeholder="Mínimo 6 caracteres" minlength="6" required />
+            </div>
+            <div class="field">
+              <label for="cadConfirma">Confirmar senha</label>
+              <input id="cadConfirma" type="password" placeholder="Repita a senha" required />
+            </div>
+            <div class="error-msg" id="cadError"></div>
+            <div class="success-msg" id="cadSuccess"></div>
+            <button type="submit" class="btn">Criar conta</button>
+          </form>
+        </div>
+
+        <!-- Tab Recuperar -->
+        <div id="tab-recuperar" class="tab-content">
+          <form id="recuperarForm">
+            <div class="field">
+              <label for="recEmail">E-mail cadastrado</label>
+              <input id="recEmail" type="email" placeholder="seu@email.com" required />
+            </div>
+            <div class="error-msg" id="recError"></div>
+            <div class="success-msg" id="recSuccess"></div>
+            <button type="submit" class="btn">Enviar código</button>
+          </form>
+          <form id="resetSenhaForm">
+            <div class="field">
+              <label for="recCodigo">Código de recuperação</label>
+              <input id="recCodigo" type="text" placeholder="123456" required />
+            </div>
+            <div class="field">
+              <label for="recNovaSenha">Nova senha</label>
+              <input id="recNovaSenha" type="password" placeholder="Mínimo 6 caracteres" minlength="6" required />
+            </div>
+            <div class="error-msg" id="resetError"></div>
+            <div class="success-msg" id="resetSuccess"></div>
+            <button type="submit" class="btn">Redefinir senha</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="assets/js/auth.js"></script>
+  </body>
+</html>
